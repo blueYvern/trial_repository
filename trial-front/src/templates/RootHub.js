@@ -1,5 +1,6 @@
 import React,{ useState } from "react";
 import "../App.css";
+import { useNavigate } from 'react-router-dom';
 
 
 function ItemButtons({onClick}) {
@@ -20,17 +21,23 @@ function RootHub({updateTab,hidden}) {
 
     const [tab,setTab] = useState("");
     
+    const navigation = useNavigate();
+
+    const handleNavigation = (path) => {
+        updateTab(path);
+        setTab(path);
+        navigation(path);
+    };
 
     const handleTabClick = (e) => {
         let tab = e.currentTarget.id;
         console.log(tab);
-        updateTab(tab);
-        setTab(tab);
+        handleNavigation(tab);
     };
 
 
     return (
-        <div className="root-hub-container">
+        <div className="root-hub-container" style={{display: hidden ? "none" : "block"}}>
             <ItemButtons onClick={(e) => handleTabClick(e)}/>
         </div>
     );

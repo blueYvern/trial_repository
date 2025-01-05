@@ -1,5 +1,8 @@
-import React, { useEffect,useState } from 'react';
+import React, { use, useEffect,useState } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import HeroHeader from './templates/HeroHeader';
 import RootHub from './templates/RootHub';
 import MemoHome from './pages/MemoHome';
@@ -10,26 +13,23 @@ import HealthHome from './pages/HealthHome';
 import WealthHome from './pages/WealthHome';
 import DocumentHome from './pages/DocumentHome';
 
-let backend_url = "http://192.168.1.12:5000/";
-
+const backend_url = "http://192.168.1.12:5000/";
 
 function App() {
   const [tab,setTab] = useState("");
 
-  const [message,setMessage] = useState("");
+  
+  // useEffect(() => {
+  //   axios.get(backend_url + 'home/')
+  //     .then(response => setMessage(response.data.message))
+  //     .catch(error => console.error(error));
+  // },[]);
 
-
-  useEffect(() => {
-    axios.get(backend_url + 'home/')
-      .then(response => setMessage(response.data.message))
-      .catch(error => console.error(error));
-  },[]);
-
-  const sendData = () => {
-    axios.post(backend_url, { data: '{data:test}' })
-      .then(response => console.log(response))
-      .catch(error => console.error(error));
-  };
+  // const sendData = () => {
+  //   axios.post(backend_url, { data: '{data:test}' })
+  //     .then(response => console.log(response))
+  //     .catch(error => console.error(error));
+  // };
 
   const send_back = () => {
     setTab("");
@@ -37,29 +37,26 @@ function App() {
 
   const updateTab = (tab) => {
     setTab(tab);
-    send_selected_tab(tab);
-  };
-
-  const send_selected_tab = (tab) => {
-    axios.get(backend_url + '/get_tab/' + tab + '/')
-        .then(response => console.log(response))
-        .catch(error => console.error(error));
   };
 
   return (
     <div>
       <HeroHeader/>
-      <br></br>
-      {tab === "" && <RootHub updateTab={updateTab} hidden={true}/>}
-      {tab === "memos" && <MemoHome tabTitle={tab}/>}
-      {tab === "electronics" && <ElectronicsHome tabTitle={tab}/>}
-      {tab === "codings" && <CodingHome tabTitle={tab}/>}
-      {tab === "entertainment" && <EntertainmentHome tabTitle={tab}/>}
-      {tab === "docs" && <DocumentHome tabTitle={tab}/>}
-      {tab === "health" && <HealthHome tabTitle={tab}/>}
-      {tab === "wealth" && <WealthHome tabTitle={tab}/>}
+      <Router>
+        <Routes>
+          <Route path="/" element={<RootHub updateTab={updateTab} hidden={false} />} />
+          <Route path="/memos" element={<MemoHome tabTitle={tab} />} />
+          <Route path="/electronics" element={<ElectronicsHome tabTitle={tab} />} />
+          <Route path="/codings" element={<CodingHome tabTitle={tab} />} />
+          <Route path="/entertainment" element={<EntertainmentHome tabTitle={tab} />} />
+          <Route path="/docs" element={<DocumentHome tabTitle={tab} />} />
+          <Route path="/health" element={<HealthHome tabTitle={tab} />} />
+          <Route path="/wealth" element={<WealthHome tabTitle={tab} />} />
+          <Route path="/" element={<div><br/><button onClick={send_back}>Back</button></div>} />
+        </Routes>
+      </Router>
 
-      <button onClick={send_back}>Back</button>
+
   
     </div>
   )
