@@ -1,10 +1,10 @@
 import React from "react";
 import TabHeader from "../templates/TabHeader";
 
-function MemoHomepage({tabTitle}) {
+function HealthHome({tabTitle}) {
     return (
         <TabHeader tabTitle={tabTitle}/>
     );
 }
 
-export default MemoHomepage;
+export default HealthHome;

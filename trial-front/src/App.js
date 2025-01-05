@@ -2,7 +2,13 @@ import React, { useEffect,useState } from 'react';
 import axios from 'axios';
 import HeroHeader from './templates/HeroHeader';
 import RootHub from './templates/RootHub';
-import MemoHomepage from './pages/MemoHomepage';
+import MemoHome from './pages/MemoHome';
+import CodingHome from './pages/CodingHome';
+import ElectronicsHome from './pages/ElectronicsHome';
+import EntertainmentHome from './pages/EntertainmentHome';
+import HealthHome from './pages/HealthHome';
+import WealthHome from './pages/WealthHome';
+import DocumentHome from './pages/DocumentHome';
 
 let backend_url = "http://192.168.1.12:5000/";
 
@@ -45,13 +51,13 @@ function App() {
       <HeroHeader/>
       <br></br>
       {tab === "" && <RootHub updateTab={updateTab} hidden={true}/>}
-      {tab === "memos" && <MemoHomepage tabTitle={tab}/>}
-      {tab === "electronics" && <MemoHomepage tabTitle={tab}/>}
-      {tab === "codings" && <MemoHomepage tabTitle={tab}/>}
-      {tab === "entertainment" && <MemoHomepage tabTitle={tab}/>}
-      {tab === "docs" && <MemoHomepage tabTitle={tab}/>}
-      {tab === "health" && <MemoHomepage tabTitle={tab}/>}
-      {tab === "wealth" && <MemoHomepage tabTitle={tab}/>}
+      {tab === "memos" && <MemoHome tabTitle={tab}/>}
+      {tab === "electronics" && <ElectronicsHome tabTitle={tab}/>}
+      {tab === "codings" && <CodingHome tabTitle={tab}/>}
+      {tab === "entertainment" && <EntertainmentHome tabTitle={tab}/>}
+      {tab === "docs" && <DocumentHome tabTitle={tab}/>}
+      {tab === "health" && <HealthHome tabTitle={tab}/>}
+      {tab === "wealth" && <WealthHome tabTitle={tab}/>}
 
       <button onClick={send_back}>Back</button>
   
