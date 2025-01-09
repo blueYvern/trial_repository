@@ -1,0 +1,20 @@
+.status-button{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 10vw;
+}
+
+.memo-status-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+}
+
+.MuiTableCell-head {
+    font-weight: bold;
+    background-color: #f4f4f4;
+}

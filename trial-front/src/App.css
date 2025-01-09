@@ -12,6 +12,12 @@
   margin: 0px;
 }
 
+.hero-header .home-icon{
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
 .tab-header{
   display: flex;
   flex-direction: row;

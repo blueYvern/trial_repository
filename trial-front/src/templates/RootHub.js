@@ -17,7 +17,7 @@ function ItemButtons({onClick}) {
     );
 }
 
-function RootHub({updateTab,hidden}) {
+function RootHub({updateTab}) {
 
     const [tab,setTab] = useState("");
     
@@ -37,7 +37,7 @@ function RootHub({updateTab,hidden}) {
 
 
     return (
-        <div className="root-hub-container" style={{display: hidden ? "none" : "block"}}>
+        <div className="root-hub-container">
             <ItemButtons onClick={(e) => handleTabClick(e)}/>
         </div>
     );
