@@ -1,20 +1,64 @@
+.memo-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 2.5vh;
+}
+
+.memo-container{
+    margin-left: 20vw;
+    margin-right: 20vw;
+    margin-top: 5vh;
+}
+
 .status-button{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 10vw;
+    width: justify-content;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .memo-status-buttons{
     display: flex;
     flex-direction: row;
+    gap: 10px;
+    height: 5vh;
+}
+
+.memo-search{
+    display: flex;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
-    height: 10vh;
+    left: 10px;
+}
+
+.memo-table{
+    table-layout: fixed;
+    text-transform: capitalize;
+}
+
+.memo-table th,
+.memo-table td {
+  text-align: center; 
+}
+
+.memo-table-row:hover {
+  cursor: pointer;
+}
+
+.memo-table-row-selected :not(.memo-table-row:hover) {
+  background-color: #0fa3adcb;
 }
 
 .MuiTableCell-head {
     font-weight: bold;
-    background-color: #f4f4f4;
+    font-size: 160px;
+    background-color: #8d6bdb;
+}
+
+.edit-view-container{
+    margin: 10vh 20vw 5vh 20vw;
 }
