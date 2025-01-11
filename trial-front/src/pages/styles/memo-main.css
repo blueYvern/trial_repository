@@ -16,15 +16,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: justify-content;
     padding-left: 30px;
     padding-right: 30px;
+    height: 5vh;
 }
 
 .memo-status-buttons{
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 1px;
     height: 5vh;
 }
 
@@ -38,11 +38,18 @@
 .memo-table{
     table-layout: fixed;
     text-transform: capitalize;
+    background-color: #575353;
 }
 
 .memo-table th,
 .memo-table td {
   text-align: center; 
+  color: white;
+}
+
+.memo-table th {
+  font-weight: bold;
+  color: black;
 }
 
 .memo-table-row:hover {
@@ -53,7 +60,7 @@
   background-color: #0fa3adcb;
 }
 
-.MuiTableCell-head {
+.memo-table-header {
     font-weight: bold;
     font-size: 160px;
     background-color: #8d6bdb;
@@ -62,3 +69,28 @@
 .edit-view-container{
     margin: 10vh 20vw 5vh 20vw;
 }
+
+.edit-table{
+    table-layout: fixed;
+    text-transform: capitalize;
+    text-align: center;
+    background-color: #575353;
+}
+
+.edit-table th{
+    font-weight: bold;
+    background-color: #443469;
+    color: white;
+}
+
+.inactive-button{
+    background-color: #0fa3adcb;
+    color: white;
+}
+
+.active-button{
+    background-color: #443469;
+    color: white;
+    cursor: pointer;
+}
+

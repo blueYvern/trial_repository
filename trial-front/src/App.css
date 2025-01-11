@@ -29,7 +29,7 @@
   font-size: 30px;
   font-weight: 600;
   text-align: center;
-  margin: 0px;
+  margin: 5px 40vw 5px 40vw;
 }
 .root-hub-container{
   display: flex;
@@ -37,6 +37,7 @@
   align-items: center;
   background-color: #F6F6F6;
   color: #000000;
+  margin: 20px 15vw 20px 15vw;
 }
 
 .item-buttons{
@@ -63,13 +64,15 @@
   color: #F6F6F6;
 }
 
-.item-buttons:hover > .item-button:not(:hover) {
-  filter: blur(5px);
-  transform: scale(0.9);
-}
-
 .dropdown-selection{
   display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+    color: white;
+  }
 }
 
 @media(max-width: 750px){

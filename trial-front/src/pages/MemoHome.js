@@ -1,4 +1,4 @@
-import React, {use, useState} from "react";
+import React, {useState, useEffect} from "react";
 import TabHeader from "../templates/TabHeader";
 import "./styles/memo-main.css";
 import { 
@@ -23,199 +23,287 @@ import {
 //   status : string;
 // }
 
-const open_data = [
-    {  id:1, title: "Ops Alerts", target_date: "12/12/2022", created_date: "12/12/2022", persistence: "Weekly", status: "Open" },
-    {  id:2,title: "Canon", target_date: "12/12/2022", created_date: "12/12/2022", persistence: "Daily", status: "Open"  },
-    {  id:3,title: "Ops Alerts", target_date: "12/12/2022", created_date: "12/12/2022", persistence: "Monthly", status: "Open"  },
-    {  id:4,title: "Canon", target_date: "12/12/2022", created_date: "12/12/2022", persistence: "Quarterly", status: "Open"  },
-    {  id:5,title: "Ops Alerts", target_date: "12/12/2022", created_date: "12/12/2022", persistence: "Yearly", status: "Open"  },
-    {  id:6,title: "Canon", target_date: "12/12/2022", created_date: "12/12/2022", persistence: "Fortnightly", status: "Open"  },
-    {  id:7,title: "Ops Alerts", target_date: "12/12/2022", created_date: "12/12/2022", persistence: "Half Yearly", status: "Open"  },
+const openData = [
+    {  id:1, title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Weekly", status: "Open" },
+    {  id:2,title: "Canon", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Daily", status: "Open"  },
+    {  id:3,title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Monthly", status: "Open"  },
+    {  id:4,title: "Canon", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Quarterly", status: "Open"  },
+    {  id:5,title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Yearly", status: "Open"  },
+    {  id:6,title: "Canon", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Fortnightly", status: "Open"  },
+    {  id:7,title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Half Yearly", status: "Open"  },
 ];
 
-const completed_data = [
-    {  id:9,title: "Ops Alerts",  target_date: "12/12/2022", created_date: "12/12/2022", completed_date: "12/12/2022", persistence: "Fortnightly", status: "Completed" },
-    {  id:10,title: "Canon",  target_date: "12/12/2022", created_date: "12/12/2022", completed_date: "12/12/2022", persistence: "Monthly", status: "Completed" },
-    {  id:8,title: "Ops Alerts", target_date: "12/12/2022", created_date: "12/12/2022", completed_date: "12/12/2022", persistence: "Quarterly", status: "Completed" },
+const completedData = [
+    {  id:9,title: "Ops Alerts",  target_date: "2022-12-12", created_date: "2022-12-12", completed_date: "2022-12-12", persistence: "Fortnightly", status: "Completed" },
+    {  id:10,title: "Canon",  target_date: "2022-12-12", created_date: "2022-12-12", completed_date: "2022-12-12", persistence: "Monthly", status: "Completed" },
+    {  id:8,title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", completed_date: "2022-12-12", persistence: "Quarterly", status: "Completed" },
 ];
 
-function StatusButtons(props) {
-    return (
-      <div class="memo-header">
-        <input class="memo-search" type="text" placeholder="Search" value={props.search} onChange={(e) => props.searchChange(e.target.value)}/>
-        <div class="edit-button">
-          <button class="edit-button" disabled = {props.actionDisabled} onClick={() => props.action(props.selectedRow)}>{props.actionText}</button>
-        </div>
-        <div class="memo-status-buttons">
-            <button class="status-button" onClick={props.openMemos} disabled = {!props.state}>Open</button>
-            <button class="status-button" onClick={props.completedmemos} disabled = {props.state}>Completed</button>      
-        </div>
-      </div>
-    );
-}
+const StatusButtons = ({ state, toggleState, search, setSearch }) => (
+  <div className="memo-header">
+    <input
+      className="memo-search"
+      type="text"
+      placeholder="Search"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+    <div className="memo-status-buttons">
+      <button
+        onClick={() => toggleState(false)}
+        disabled={!state}
+        className={state ? "status-button active-button" : "status-button inactive-button"}
+      >
+        Open
+      </button>
+      <button
+        onClick={() => toggleState(true)}
+        disabled={state}
+        className={!state ? "status-button active-button" : "status-button inactive-button"}
+      >
+        Completed
+      </button>
+    </div>
+  </div>
+);
 
-function DataTable(props) {
+const DataTable = ({ data, search, hiddenColumns, selectedRows, onRowClick, sortColumn, onSortColumn }) => (
+  <TableContainer component={Paper}>
+    <Table className="memo-table">
+      <TableHead className="memo-table-header">
+        <TableRow>
+          <TableCell onClick={() => onSortColumn("title")}>
+            Title {sortColumn.key === "title" && (sortColumn.order === "asc" ? "↑" : sortColumn.order === "desc" ? "↓" : "")}
+          </TableCell>
+          <TableCell onClick={() => onSortColumn("target_date")}>
+            Target Date {sortColumn.key === "target_date" && (sortColumn.order === "asc" ? "↑" : sortColumn.order === "desc" ? "↓" : "")}
+          </TableCell>
+          <TableCell onClick={() => onSortColumn("created_date")}>
+            Created Date {sortColumn.key === "created_date" && (sortColumn.order === "asc" ? "↑" : sortColumn.order === "desc" ? "↓" : "")}
+          </TableCell>
+          <TableCell onClick={() => onSortColumn("persistence")}>
+            Persistence {sortColumn.key === "persistence" && (sortColumn.order === "asc" ? "↑" : sortColumn.order === "desc" ? "↓" : "")}
+          </TableCell>
+          {!hiddenColumns.includes("completed") && (
+            <TableCell onClick={() => onSortColumn("completed_date")}>
+              Completed Date {sortColumn.key === "completed_date" && (sortColumn.order === "asc" ? "↑" : sortColumn.order === "desc" ? "↓" : "")}
+            </TableCell>
+          )}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data
+          .filter((row) => row.title.toLowerCase().includes(search.toLowerCase()))
+          .map((row) => (
+            <TableRow
+              key={row.id}
+              hover
+              onClick={() => onRowClick(row)}
+              className={selectedRows.some((selected) => selected.id === row.id) ? "memo-table-row-selected" : ""}
+            >
+              <TableCell>{row.title}</TableCell>
+              <TableCell>{row.target_date}</TableCell>
+              <TableCell>{row.created_date}</TableCell>
+              <TableCell>{row.persistence}</TableCell>
+              {!hiddenColumns.includes("completed") && <TableCell>{row.completed_date}</TableCell>}
+            </TableRow>
+          ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
 
-  const handleRowClick = (row) => {
-    props.updateSelection(row);
-    props.setActionDisabled(false);
-  };
+const EditBlock = ({
+  row,
+  onAction,
+  actionText,
+  editableRow,
+  setEditableRow,
+  showSave,
+  updateAction,
+  handleInputChange,
+  handleDateChange,
+  persistenceOptions,
+}) => {
+  useEffect(() => {
+    setEditableRow(row);
+  }, [row]);
 
   return (
-    <div className="memo-container">
-      <StatusButtons  
-        state={props.state} 
-        openMemos={props.openMemos} 
-        completedmemos={props.completedmemos}
-        search={props.search} 
-        searchChange={props.searchChange}
-        actionDisabled={props.actionDisabled}
-        action={props.action}
-        actionText={props.actionText}
-        selectedRow = {props.selection}
-        />
-      <Box>
-        <TableContainer component={Paper}>
-          <Table className="memo-table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Title</TableCell>
-                <TableCell>Target Date</TableCell>
-                <TableCell>Created Date</TableCell>
-                <TableCell>Persitence</TableCell>
-                {!props.hiddenList.includes("completed") && <TableCell>Completed Date</TableCell>}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {props.data.filter(
-                  (row) =>
-                  !props.search.length || row.title.toString().toLowerCase().includes(props.search.toLowerCase()))
-                .map((row) => (
-                <TableRow 
-                  key={row.id}
-                  hover
-                  onClick={() => handleRowClick(row)}
-                  className={props.selectedId === row.id ? "memo-table-row-selected" : "memo-table-row"}>
-                  <TableCell>{row.title}</TableCell>
-                  <TableCell>{row.created_date}</TableCell>
-                  <TableCell>{row.target_date}</TableCell>              
-                  <TableCell>{row.persistence}</TableCell>
-                  {!props.hiddenList.includes("completed") && <TableCell>{row.completed_date}</TableCell>}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    </div>
-  );
-}
-
-function EditBlock({row, action}) {
-
-  return(
-    <div className="edit-view-container">
+    <Box className="edit-view-container">
       <TableContainer component={Paper}>
-        <Table className="memo-table">
+        <Table className="edit-table">
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
               <TableCell>Target Date</TableCell>
               <TableCell>Created Date</TableCell>
-              <TableCell>Persitence</TableCell>
-              <TableCell>Completed Date</TableCell>
+              <TableCell>Persistence</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell>{row.title}</TableCell>
-              <TableCell>{row.target_date}</TableCell>
-              <TableCell>{row.created_date}</TableCell>
-              <TableCell>{row.persistence}</TableCell>
-              <TableCell>{row.completed_date}</TableCell>
+              <TableCell>
+                <input
+                  type="text"
+                  value={editableRow.title}
+                  onChange={(e) => handleInputChange(e, "title")}
+                />
+              </TableCell>
+              <TableCell>
+                <input
+                  type="date"
+                  value={editableRow.target_date}
+                  onChange={handleDateChange}
+                  min={new Date().toISOString().split("T")[0]}
+                />
+              </TableCell>
+              <TableCell>{editableRow.created_date}</TableCell>
+              <TableCell>
+                <select
+                  value={editableRow.persistence}
+                  onChange={(e) => handleInputChange(e, "persistence")}
+                >
+                  {persistenceOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </TableCell>
+              <TableCell>
+                <button
+                  className="status-button active-button"
+                  onClick={onAction}
+                >
+                  {actionText}
+                </button>
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-      <div class="edit-button">
-        <button class="edit-button">{action}</button>
-      </div>
-    </div>
-  )
+      {showSave && (
+        <button className="save-button" onClick={updateAction}>
+          Save
+        </button>
+      )}
+    </Box>
+  );
+};
 
-}
+const MemoHome = ({ tabTitle }) => {
+  const [state, setState] = useState(false);
+  const [data, setData] = useState(openData);
+  const [search, setSearch] = useState("");
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [actionText, setActionText] = useState("Complete");
+  const [editableRow, setEditableRow] = useState({});
+  const [showSave, setShowSave] = useState(false);
+  const [sortColumn, setSortColumn] = useState({ key: "", order: "" }); // Holds the sorting state
 
-function MemoHome({tabTitle}) {
+  const persistenceOptions = ["Daily", "Weekly", "Monthly", "Quarterly", "Yearly"];
 
-    const [state,setState] = useState(false);
-    const [data,setData] = useState(open_data);
-    const [search,setSearch] = useState("");
-    const [hiddenList, setHiddenList] = useState(["completed"]);
-    const [selection, setSelection] = useState([]);
-    const [selectedId, setSelectedId] = useState(0);
-    const [status, setStatus] = useState("Open");
-    const [actionText, setActionText] = useState("Complete");
-    const [actionDisabled, setActionDisabled] = useState(true);
+  const toggleState = (isCompleted) => {
+    setState(isCompleted);
+    setData(isCompleted ? completedData : openData);
+    setSelectedRows([]);
+    setActionText(isCompleted ? "Reopen" : "Complete");
+    setSortColumn({ key: "", order: "" });
+  };
 
-    const openMemos = () => {
-        setState(!state);
-        setData(open_data);
-        setSearch("");
-        setHiddenList(["completed"]);
-        updateSelection({});
-        setStatus("Open");
-        setActionText("Complete");
-        setActionDisabled(true);
-        console.log(selection === null);
+  const handleRowClick = (row) => {
+    let currentSelected = selectedRows.some((selected) => selected.id === row.id);
+    if (currentSelected) {
+      setSelectedRows([]);
+      setEditableRow({});
+      return;
+    }
+    setSelectedRows([row]);
+    setEditableRow(row);
+  };
+
+  const onSortColumn = (key) => {
+    let newOrder = "asc";
+    if (sortColumn.key === key) {
+      if (sortColumn.order === "asc") newOrder = "desc";
+      else if (sortColumn.order === "desc") newOrder = "";
     }
 
-    const completedmemos = () => {
-        setState(!state);
-        setData(completed_data);
-        setSearch("");
-        setHiddenList([]);
-        updateSelection({});
-        setStatus("Completed");
-        setActionText("Reopen");
-        setActionDisabled(true);
-        console.log(selection);
-    }
+    setSortColumn({ key, order: newOrder });
 
-    const searchChange = (value) => {
-        setSearch(value);
+    if (newOrder === "") {
+      setData(state ? completedData : openData); // Reset to original order
+    } else {
+      const sortedData = [...data].sort((a, b) => {
+        if (a[key] < b[key]) return newOrder === "asc" ? -1 : 1;
+        if (a[key] > b[key]) return newOrder === "asc" ? 1 : -1;
+        return 0;
+      });
+      setData(sortedData);
     }
+  };
 
-    const updateSelection = (selectedRow) => {
-      setSelection(selectedRow);
-      setSelectedId(selectedRow.id);
-    }
+  const handleInputChange = (e, field) => {
+    const updatedRow = { ...editableRow, [field]: e.target.value };
+    setEditableRow(updatedRow);
+    setShowSave(JSON.stringify(updatedRow) !== JSON.stringify(selectedRows[0]));
+  };
 
-    const action = (row) => {
-      console.log(row,actionText);
-    }
+  const handleDateChange = (e) => {
+    const updatedDate = e.target.value;
+    handleInputChange(e, "target_date");
+  };
 
-    return (
-        <div>
-            <TabHeader tabTitle={tabTitle}/>  
-            <DataTable 
-              data={data}
-              search={search} 
-              hiddenList={hiddenList}
-              updateSelection={updateSelection}
-              selection={selection}
-              selectedId={selectedId}
-              status={status}
-              state={state} 
-              openMemos={openMemos} 
-              completedmemos={completedmemos} 
-              searchChange={searchChange}
-              actionText={actionText}
-              actionDisabled={actionDisabled}
-              setActionDisabled={setActionDisabled}
-              action={action}/>
-            {!selection.size > 0 ? <EditBlock row={selection} action={action}/> : <p>No</p>}  
-        </div>
+  const updateAction = () => {
+    const updatedData = data.map((row) =>
+      row.id === editableRow.id ? editableRow : row
     );
-}
+    setData(updatedData);
+    setShowSave(false);
+  };
+
+  const handleAction = () => {
+    console.log(editableRow, actionText);
+  };
+
+  return (
+    <div>
+      <TabHeader tabTitle={tabTitle} />
+      <div className="memo-container">
+        <StatusButtons
+          state={state}
+          toggleState={toggleState}
+          search={search}
+          setSearch={setSearch}
+        />
+        <DataTable
+          data={data}
+          search={search}
+          hiddenColumns={state ? [] : ["completed"]}
+          selectedRows={selectedRows}
+          onRowClick={handleRowClick}
+          sortColumn={sortColumn}
+          onSortColumn={onSortColumn}
+        />
+      </div>
+      {selectedRows.length > 0 && (
+        <EditBlock
+          row={selectedRows[0]}
+          onAction={handleAction}
+          actionText={actionText}
+          editableRow={editableRow}
+          setEditableRow={setEditableRow}
+          showSave={showSave}
+          updateAction={updateAction}
+          handleInputChange={handleInputChange}
+          handleDateChange={handleDateChange}
+          persistenceOptions={persistenceOptions}
+        />
+      )}
+    </div>
+  );
+};
 
 export default MemoHome;
