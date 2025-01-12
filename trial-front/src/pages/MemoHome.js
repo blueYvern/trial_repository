@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, act} from "react";
 import TabHeader from "../templates/TabHeader";
+import * as approute from "../routes/routes";
 import "./styles/memo-main.css";
 import { 
   Table, 
@@ -9,37 +10,10 @@ import {
   TableHead, 
   TableRow, 
   Paper,
-  Box,
-  Button
+  Box
 } from "@mui/material";
 
-// Memo {
-//   id: number;
-//   title : string;
-//   target_date : Date;
-//   created_date : Date;
-//   completed_date : Date;
-//   persistence : string;
-//   status : string;
-// }
-
-const openData = [
-    {  id:1, title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Weekly", status: "Open" },
-    {  id:2,title: "Canon", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Daily", status: "Open"  },
-    {  id:3,title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Monthly", status: "Open"  },
-    {  id:4,title: "Canon", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Quarterly", status: "Open"  },
-    {  id:5,title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Yearly", status: "Open"  },
-    {  id:6,title: "Canon", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Fortnightly", status: "Open"  },
-    {  id:7,title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", persistence: "Half Yearly", status: "Open"  },
-];
-
-const completedData = [
-    {  id:9,title: "Ops Alerts",  target_date: "2022-12-12", created_date: "2022-12-12", completed_date: "2022-12-12", persistence: "Fortnightly", status: "Completed" },
-    {  id:10,title: "Canon",  target_date: "2022-12-12", created_date: "2022-12-12", completed_date: "2022-12-12", persistence: "Monthly", status: "Completed" },
-    {  id:8,title: "Ops Alerts", target_date: "2022-12-12", created_date: "2022-12-12", completed_date: "2022-12-12", persistence: "Quarterly", status: "Completed" },
-];
-
-const StatusButtons = ({ state, toggleState, search, setSearch }) => (
+const StatusButtons = ({ state, toggleState, search, setSearch, handleNewAction }) => (
   <div className="memo-header">
     <input
       className="memo-search"
@@ -48,6 +22,12 @@ const StatusButtons = ({ state, toggleState, search, setSearch }) => (
       value={search}
       onChange={(e) => setSearch(e.target.value)}
     />
+    {!state &&     
+      <div className="memo-create-button">
+        <button className="status-button active-button" 
+          onClick={() => handleNewAction()}>ADD</button>
+      </div>
+    }
     <div className="memo-status-buttons">
       <button
         onClick={() => toggleState(false)}
@@ -92,8 +72,8 @@ const DataTable = ({ data, search, hiddenColumns, selectedRows, onRowClick, sort
         </TableRow>
       </TableHead>
       <TableBody>
-        {data
-          .filter((row) => row.title.toLowerCase().includes(search.toLowerCase()))
+        {data &&
+          data.filter((row) => row.title.toLowerCase().includes(search.toLowerCase()))
           .map((row) => (
             <TableRow
               key={row.id}
@@ -124,11 +104,11 @@ const EditBlock = ({
   handleInputChange,
   handleDateChange,
   persistenceOptions,
+  deleteAction
 }) => {
   useEffect(() => {
     setEditableRow(row);
   }, [row]);
-
   return (
     <Box className="edit-view-container">
       <TableContainer component={Paper}>
@@ -189,28 +169,95 @@ const EditBlock = ({
           Save
         </button>
       )}
+      <button className="delete-button" onClick={() => deleteAction()}>
+        Delete
+      </button>
     </Box>
   );
 };
 
+const CreateBlock = ({  
+  persistenceOptions,
+  handleCreateMemo,
+  handleNewMemo,
+  handleCancel}) => (
+  <div className="edit-view-container">
+    <Box>
+      <TableContainer component={Paper}>
+        <Table className="create-table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Title</TableCell>
+              <TableCell>Target Date</TableCell>
+              <TableCell>Persistence</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <input type="text" 
+                placeholder={"Title"}
+                onChange={(e) => handleCreateMemo(e,"title")}
+                required/>
+              </TableCell>
+              <TableCell>
+                <input type="date"
+                placeholder={new Date().toISOString().split("T")[0]}
+                min={new Date().toISOString().split("T")[0]} 
+                onChange={(e) => handleCreateMemo(e,"target_date")}/>
+              </TableCell>
+              <TableCell>
+                <select
+                  placeholder={"Select a frequency"}
+                  onChange={(e) => handleCreateMemo(e,"persistence")}>
+                  {persistenceOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+    <button onClick={handleNewMemo}>Create</button>
+    <button onClick={handleCancel}>Cancel</button>
+  </div>
+)
+
 const MemoHome = ({ tabTitle }) => {
   const [state, setState] = useState(false);
-  const [data, setData] = useState(openData);
+  const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
   const [actionText, setActionText] = useState("Complete");
   const [editableRow, setEditableRow] = useState({});
   const [showSave, setShowSave] = useState(false);
   const [sortColumn, setSortColumn] = useState({ key: "", order: "" }); // Holds the sorting state
-
+  const [displayCreate, setDisplayCreate] = useState(false);
+  const [createdMemo, setCreatedMemo] = useState({});
   const persistenceOptions = ["Daily", "Weekly", "Monthly", "Quarterly", "Yearly"];
 
+  const fetchData = async () => {
+    if (state) {
+      backend_getCompletedMemos();
+    } else {
+      backend_getOpenMemos();
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [state]); // The data will be fetched when the 'state' changes
+  
   const toggleState = (isCompleted) => {
     setState(isCompleted);
-    setData(isCompleted ? completedData : openData);
     setSelectedRows([]);
     setActionText(isCompleted ? "Reopen" : "Complete");
     setSortColumn({ key: "", order: "" });
+    setDisplayCreate(false);
   };
 
   const handleRowClick = (row) => {
@@ -230,11 +277,9 @@ const MemoHome = ({ tabTitle }) => {
       if (sortColumn.order === "asc") newOrder = "desc";
       else if (sortColumn.order === "desc") newOrder = "";
     }
-
     setSortColumn({ key, order: newOrder });
-
     if (newOrder === "") {
-      setData(state ? completedData : openData); // Reset to original order
+      setData(data);
     } else {
       const sortedData = [...data].sort((a, b) => {
         if (a[key] < b[key]) return newOrder === "asc" ? -1 : 1;
@@ -252,31 +297,189 @@ const MemoHome = ({ tabTitle }) => {
   };
 
   const handleDateChange = (e) => {
-    const updatedDate = e.target.value;
     handleInputChange(e, "target_date");
   };
 
-  const updateAction = () => {
-    const updatedData = data.map((row) =>
-      row.id === editableRow.id ? editableRow : row
-    );
-    setData(updatedData);
-    setShowSave(false);
+  const updateAction = async () => {
+    if (await backend_updateMemo(editableRow)){
+      setSelectedRows([]);
+      setEditableRow({});
+      setShowSave(false);
+      fetchData();
+    }    
   };
 
-  const handleAction = () => {
-    console.log(editableRow, actionText);
+  const handleAction = async () => {
+    const actioned_memo = {...editableRow};
+    if (actionText === "Complete") {
+      actioned_memo.status = "completed";
+      actioned_memo.completed_date = new Date().toISOString().split("T")[0];
+    }
+    else if (actionText === "Reopen") {
+      actioned_memo.status = "open";
+      actioned_memo.completed_date = null;
+    }
+    if (await backend_updateActionMemo(actioned_memo,actionText.toLowerCase())){
+      setSelectedRows([]);
+      setEditableRow({});
+      setShowSave(false);
+      fetchData();
+    }
   };
+
+  const handleNewAction = () => {
+    setDisplayCreate(true);
+  };
+
+  const handleCreateMemo = (e,field) => {
+    const newMemo = {...createdMemo, [field]: e.target.value};
+    setCreatedMemo(newMemo);
+  }
+
+  const handleNewMemo = async () => {
+    const newMemo = {...createdMemo};
+    if (newMemo.title){
+      if(!newMemo.target_date){
+        newMemo.target_date = new Date().toISOString().split("T")[0];
+      }
+      if(!newMemo.persistence){
+        newMemo.persistence = "Daily";
+      }
+      newMemo.created_date = new Date().toISOString().split("T")[0];
+      if (await backend_createNewMemo(newMemo)){
+        setCreatedMemo({});
+        setDisplayCreate(false);
+        fetchData();
+        return;
+      }
+    }
+    else{
+      alert("Please enter a title");
+    }
+  }
+
+  const handleCancel = () => {
+    setCreatedMemo({});
+    setDisplayCreate(false);
+  }
+
+  const deleteAction = async () => {
+
+    if (await backend_deleteMemo(editableRow.id)){
+      setSelectedRows([]);
+      setEditableRow({});
+      setShowSave(false);
+      fetchData();
+    }
+  }
+
+  // .........................................................................  
+  
+  const backend_getOpenMemos = async () => {
+    let open_url = approute.get_memos + "open/";
+    try{
+      const response = await fetch(open_url);
+      if(!response.ok){
+        throw new Error('HTTP Error! Status: {}', response.status);
+      }
+      const data = await response.json();
+      setData(data);
+    }
+    catch(error){
+      console.error("Error fetching open memos", error);
+    }
+  }
+
+  const backend_getCompletedMemos = async () => {
+    let completed_url = approute.get_memos + "completed/";
+    try{
+      const response = await fetch(completed_url);
+      if(!response.ok){
+        throw new Error('HTTP Error! Status: {}', response.status);
+      }
+      const data = await response.json();
+      setData(data);
+    }
+    catch(error){
+      alert("Error fetching open memos", error);
+    }
+  }
+
+  const backend_createNewMemo = async (memo) => {
+    let create_url = approute.create_memo;
+    try{
+      const response = await fetch(create_url,{method: 'POST', headers: {'Content-Type': 'application/json'}, body: (JSON.stringify(memo))});
+      if (!response.ok) {
+        throw new Error('HTTP Error! Status: {}', response.status);
+      }
+      alert("Memo " + memo.title + " Created!");
+      return true;
+    }
+    catch(error){
+      alert("Error creating memo",error);
+    }
+    return false;
+  }
+
+  const backend_updateMemo = async (memo) => {
+    let update_url = approute.update_memo;
+    try{
+      const response = await fetch(update_url,{method: 'PUT', headers: {'Content-Type': 'application/json'}, body: (JSON.stringify(memo))});
+      if (!response.ok) {
+        throw new Error('HTTP Error! Status: {}', response.status);
+      }
+      alert("Memo " + memo.title + " Updated!");
+      return true;
+    }
+    catch(error){
+      alert("Error updating memo",error);
+    }
+  }
+
+  const backend_updateActionMemo = async (memo,action) => {
+    let update_url = approute.update_memo + action;
+    try{
+      const response = await fetch(update_url,{method: 'PUT', headers: {'Content-Type': 'application/json'}, body: (JSON.stringify(memo))});
+      if (!response.ok) {
+        throw new Error('HTTP Error! Status: {}', response.status);
+      }
+      alert("Memo " + memo.title + " Updated!");
+      return true;
+    }
+    catch(error){
+      alert("Error updating memo",error);
+    }
+  }
+
+  const backend_deleteMemo = async (id) => {
+    let delete_url = approute.delete_memo + id;
+    try{
+      const response = await fetch(delete_url,{method: 'DELETE'});
+      if (!response.ok) {
+        throw new Error('HTTP Error! Status: {}', response.status);
+      }
+      alert("Memo " + id + " Deleted!");
+      return true;
+    }
+    catch(error){
+      alert("Error deleting memo",error);
+    }
+    return false;
+  }
+
+  // .........................................................................
 
   return (
     <div>
       <TabHeader tabTitle={tabTitle} />
+      {!displayCreate &&
       <div className="memo-container">
         <StatusButtons
           state={state}
           toggleState={toggleState}
           search={search}
           setSearch={setSearch}
+          handleNewAction = {handleNewAction}
         />
         <DataTable
           data={data}
@@ -287,8 +490,8 @@ const MemoHome = ({ tabTitle }) => {
           sortColumn={sortColumn}
           onSortColumn={onSortColumn}
         />
-      </div>
-      {selectedRows.length > 0 && (
+      </div>}
+      {selectedRows.length > 0 && !displayCreate && (
         <EditBlock
           row={selectedRows[0]}
           onAction={handleAction}
@@ -300,8 +503,18 @@ const MemoHome = ({ tabTitle }) => {
           handleInputChange={handleInputChange}
           handleDateChange={handleDateChange}
           persistenceOptions={persistenceOptions}
+          deleteAction={deleteAction}
         />
       )}
+      {displayCreate && 
+        <CreateBlock 
+          persistenceOptions={persistenceOptions}
+          createdMemo={createdMemo}
+          setCreatedMemo={setCreatedMemo}
+          handleCreateMemo={handleCreateMemo}
+          handleNewMemo={handleNewMemo}
+          handleCancel={handleCancel}
+           />}
     </div>
   );
 };

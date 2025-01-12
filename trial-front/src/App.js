@@ -13,8 +13,6 @@ import HealthHome from './pages/HealthHome';
 import WealthHome from './pages/WealthHome';
 import DocumentHome from './pages/DocumentHome';
 
-const backend_url = "http://192.168.1.12:5000/";
-
 function App() {
 
   // useEffect(() => {
