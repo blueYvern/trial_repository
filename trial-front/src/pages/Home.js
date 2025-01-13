@@ -1,7 +1,8 @@
 import React,{useState, useEffect} from "react";
 import RootHub from '../templates/RootHub';
 import * as approute from "../routes/routes";
-import DonutChart from "react-donut-chart";
+import ApexCharts from 'apexcharts'
+import Loader from "../templates/Loader";
 import "../App.css";
 
 function MemoDashboard({
@@ -9,20 +10,8 @@ function MemoDashboard({
 }){
     return(
         <div className="memo-dashboard">
-            {inputData.length > 0 && <DonutChart
-                height={200}
-                width={200}
-                legend={false}
-                colors={["#FF0000", "#00FF00"]}
-                data={[
-                    {   label: "Completed", 
-                        value: inputData[0].completed_count 
-                    },
-                    {   label: "Open", 
-                        value: inputData[0].open_count 
-                    }
-            ]}/>
-            }
+            <p className="memo-count">Open: {inputData.open_count}</p>
+            <p className="memo-count">Completed: {inputData.completed_count}</p>
         </div>
     );
 }
@@ -30,6 +19,7 @@ function MemoDashboard({
 function HomePage(){
     
     const [data,setData] = useState([]);
+    const [loadingState, setLoadingState] = useState(false);
 
     useEffect(() => {  
         backend_getMemoCount();
@@ -37,12 +27,14 @@ function HomePage(){
     
     const backend_getMemoCount = async () => {
         try{
+            setLoadingState(true);
             const response = await fetch(approute.get_memos,{method: 'GET'});
             if(!response.ok){
                 throw new Error('HTTP Error! Status: ' + response.status);
             }
             const data = await response.json();
-            setData(data);
+            setData(data[0]);
+            setLoadingState(false);
         }
         catch(error){
             alert("Error fetching memo count", error);
@@ -52,10 +44,10 @@ function HomePage(){
     return(
         <div className="home-container">
             <RootHub/>
-            <div className="dashboard-container">
+            {loadingState ? <Loader/> : <div className="dashboard-container">
                 <MemoDashboard 
                     inputData={data}/>
-            </div>
+            </div>}
         </div>
     );
 }

@@ -17,8 +17,7 @@ class MemoService:
             else:
                 completed_count += 1
         return {'open_count':open_count,
-                'completed_count':completed_count,
-                'total':open_count+completed_count}
+                'completed_count':completed_count}
 
     @staticmethod
     def createMemo(memo):

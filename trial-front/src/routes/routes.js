@@ -1,4 +1,4 @@
-const backend_url = "http://192.168.1.12:5000/";
+const backend_url = "http://vesna.backend.com/";
 const memo_url = backend_url + "memos/";
 
 export const create_memo = memo_url + "create_memo/";
