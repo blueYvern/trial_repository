@@ -1,0 +1,35 @@
+.electronics-home-hub{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: #000000;
+    font-size: 30px;
+
+    align-items: center;
+}
+
+.components-button{
+    text-transform: capitalize;
+    width: 25vw;
+    height: 10vh;
+    font-size: larger;
+}
+
+.active-button{
+    background-color: #443469;
+    color: white;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 150;
+}
+
+.inactive-button{
+    background-color: #F6F6F6;
+    color: #000000;
+    cursor: pointer;
+}
+
+.section-container{
+    margin: 10px;
+    border: 1px solid #8d6bdb;
+}

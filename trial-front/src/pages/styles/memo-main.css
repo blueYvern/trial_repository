@@ -94,3 +94,9 @@
     cursor: pointer;
 }
 
+
+.create-table th {
+    font-weight: bold;
+    background-color: #8d6bdb;
+    color: white;
+}

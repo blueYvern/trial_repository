@@ -17,15 +17,10 @@ function ItemButtons({onClick}) {
     );
 }
 
-function RootHub({updateTab}) {
-
-    const [tab,setTab] = useState("");
-    
+function RootHub() {  
     const navigation = useNavigate();
 
     const handleNavigation = (path) => {
-        updateTab(path);
-        setTab(path);
         navigation(path);
     };
 

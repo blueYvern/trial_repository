@@ -124,5 +124,43 @@
     display: block;
     justify-content: center;
   }
+}
 
+.loading-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboard-container{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7vh;
+  align-items: center;
+  justify-items: center;
+  margin: 10px 20px 10px 20px;
+}
+
+.dashboard{
+  border: 2px solid white;
+  border-radius: 20px;
+  width: 20vw;
+  height: 30vh;
+}
+
+.dashboard-title{
+  display: flex;
+  position: relative;
+  top: -5px;
+  left: 50%;
+  transform: translate(-50%);
+  color: white;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 4px;
+  height: 5vh;
+  font-size: larger;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
 }
