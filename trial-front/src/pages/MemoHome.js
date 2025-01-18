@@ -12,6 +12,7 @@ import {
   Paper,
   Box
 } from "@mui/material";
+import Loader from "../templates/Loader";
 
 const StatusButtons = ({ state, toggleState, search, setSearch, handleNewAction }) => (
   <div className="memo-header">
@@ -239,6 +240,8 @@ const MemoHome = ({ tabTitle }) => {
   const [displayCreate, setDisplayCreate] = useState(false);
   const [createdMemo, setCreatedMemo] = useState({});
   const persistenceOptions = ["Daily", "Weekly", "Monthly", "Quarterly", "Yearly"];
+  const [loaderState, setLoaderState] = useState(false);
+
 
   const fetchData = async () => {
     if (state) {
@@ -378,45 +381,59 @@ const MemoHome = ({ tabTitle }) => {
   const backend_getOpenMemos = async () => {
     let open_url = approute.get_memos + "open/";
     try{
+      setLoaderState(true);
       const response = await fetch(open_url);
       if(!response.ok){
         throw new Error('HTTP Error! Status: {}', response.status);
       }
       const data = await response.json();
       setData(data);
+      setLoaderState(false);
     }
     catch(error){
       console.error("Error fetching open memos", error);
+    }
+    finally{
+      setLoaderState(false);
     }
   }
 
   const backend_getCompletedMemos = async () => {
     let completed_url = approute.get_memos + "completed/";
     try{
+      setLoaderState(true);
       const response = await fetch(completed_url);
       if(!response.ok){
         throw new Error('HTTP Error! Status: {}', response.status);
       }
       const data = await response.json();
       setData(data);
+      setLoaderState(false);
     }
     catch(error){
       alert("Error fetching open memos", error);
+    }
+    finally{
+      setLoaderState(false);
     }
   }
 
   const backend_createNewMemo = async (memo) => {
     let create_url = approute.create_memo;
     try{
+      setLoaderState(true);
       const response = await fetch(create_url,{method: 'POST', headers: {'Content-Type': 'application/json'}, body: (JSON.stringify(memo))});
       if (!response.ok) {
         throw new Error('HTTP Error! Status: {}', response.status);
       }
-      alert("Memo " + memo.title + " Created!");
+      setLoaderState(false);
       return true;
     }
     catch(error){
       alert("Error creating memo",error);
+    }
+    finally{
+      setLoaderState(false);
     }
     return false;
   }
@@ -424,45 +441,59 @@ const MemoHome = ({ tabTitle }) => {
   const backend_updateMemo = async (memo) => {
     let update_url = approute.update_memo;
     try{
+      setLoaderState(true);
       const response = await fetch(update_url,{method: 'PUT', headers: {'Content-Type': 'application/json'}, body: (JSON.stringify(memo))});
       if (!response.ok) {
         throw new Error('HTTP Error! Status: {}', response.status);
       }
-      alert("Memo " + memo.title + " Updated!");
+      setLoaderState(false);
       return true;
     }
     catch(error){
       alert("Error updating memo",error);
     }
+    finally{
+      setLoaderState(false);
+    }
+    return false;
   }
 
   const backend_updateActionMemo = async (memo,action) => {
     let update_url = approute.update_memo + action;
     try{
+      setLoaderState(true);
       const response = await fetch(update_url,{method: 'PUT', headers: {'Content-Type': 'application/json'}, body: (JSON.stringify(memo))});
       if (!response.ok) {
         throw new Error('HTTP Error! Status: {}', response.status);
       }
-      alert("Memo " + memo.title + " Updated!");
+      setLoaderState(false);
       return true;
     }
     catch(error){
       alert("Error updating memo",error);
     }
+    finally{
+      setLoaderState(false);
+    }
+    return false;
   }
 
   const backend_deleteMemo = async (id) => {
     let delete_url = approute.delete_memo + id;
     try{
+      setLoaderState(true);
       const response = await fetch(delete_url,{method: 'DELETE'});
       if (!response.ok) {
         throw new Error('HTTP Error! Status: {}', response.status);
       }
-      alert("Memo " + id + " Deleted!");
+      setLoaderState(false);
       return true;
     }
     catch(error){
       alert("Error deleting memo",error);
+    }
+    finally{
+      setLoaderState(false);
     }
     return false;
   }
@@ -472,50 +503,53 @@ const MemoHome = ({ tabTitle }) => {
   return (
     <div>
       <TabHeader tabTitle={tabTitle} />
-      {!displayCreate &&
-      <div className="memo-container">
-        <StatusButtons
-          state={state}
-          toggleState={toggleState}
-          search={search}
-          setSearch={setSearch}
-          handleNewAction = {handleNewAction}
-        />
-        <DataTable
-          data={data}
-          search={search}
-          hiddenColumns={state ? [] : ["completed"]}
-          selectedRows={selectedRows}
-          onRowClick={handleRowClick}
-          sortColumn={sortColumn}
-          onSortColumn={onSortColumn}
-        />
+      {loaderState ? <Loader /> : <div>
+        {!displayCreate &&
+        <div className="memo-container">
+          <StatusButtons
+            state={state}
+            toggleState={toggleState}
+            search={search}
+            setSearch={setSearch}
+            handleNewAction = {handleNewAction}
+          />
+          <DataTable
+            data={data}
+            search={search}
+            hiddenColumns={state ? [] : ["completed"]}
+            selectedRows={selectedRows}
+            onRowClick={handleRowClick}
+            sortColumn={sortColumn}
+            onSortColumn={onSortColumn}
+          />
+        </div>
+        }
+        {selectedRows.length > 0 && !displayCreate && (
+          <EditBlock
+            row={selectedRows[0]}
+            onAction={handleAction}
+            actionText={actionText}
+            editableRow={editableRow}
+            setEditableRow={setEditableRow}
+            showSave={showSave}
+            updateAction={updateAction}
+            handleInputChange={handleInputChange}
+            handleDateChange={handleDateChange}
+            persistenceOptions={persistenceOptions}
+            deleteAction={deleteAction}
+          />
+        )}
+        {displayCreate && 
+          <CreateBlock 
+            persistenceOptions={persistenceOptions}
+            createdMemo={createdMemo}
+            setCreatedMemo={setCreatedMemo}
+            handleCreateMemo={handleCreateMemo}
+            handleNewMemo={handleNewMemo}
+            handleCancel={handleCancel} />
+        }
       </div>}
-      {selectedRows.length > 0 && !displayCreate && (
-        <EditBlock
-          row={selectedRows[0]}
-          onAction={handleAction}
-          actionText={actionText}
-          editableRow={editableRow}
-          setEditableRow={setEditableRow}
-          showSave={showSave}
-          updateAction={updateAction}
-          handleInputChange={handleInputChange}
-          handleDateChange={handleDateChange}
-          persistenceOptions={persistenceOptions}
-          deleteAction={deleteAction}
-        />
-      )}
-      {displayCreate && 
-        <CreateBlock 
-          persistenceOptions={persistenceOptions}
-          createdMemo={createdMemo}
-          setCreatedMemo={setCreatedMemo}
-          handleCreateMemo={handleCreateMemo}
-          handleNewMemo={handleNewMemo}
-          handleCancel={handleCancel}
-           />}
-    </div>
+  </div>
   );
 };
 
