@@ -50,6 +50,13 @@ class MemoService:
         else:
             return False
 
+    def check_existing_by_title(title,persistence):
+        memo = Memo.query.filter_by(title=title,persistence=persistence).first()
+        if memo:
+            return memo.id
+        else:
+            return 0
+
     @staticmethod
     def deleteMemo(id):
         if MemoService.check_existing_id(id):
@@ -62,7 +69,7 @@ class MemoService:
 
     @staticmethod
     def updateMemo(memo):
-        if MemoService.check_existing_id(memo["id"]) and not (MemoService.check_existing(memo["title"],memo["persistence"])):
+        if MemoService.check_existing_id(memo["id"]) and (MemoService.check_existing_by_title(memo["title"],memo["persistence"]) == memo["id"] or MemoService.check_existing_by_title(memo["title"],memo["persistence"]) == 0):
             memo_to_update = Memo.query.filter_by(id=memo["id"]).first()
             memo_to_update.title = memo["title"]
             memo_to_update.created_date = memo["created_date"]

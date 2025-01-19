@@ -181,7 +181,8 @@ const CreateBlock = ({
   persistenceOptions,
   handleCreateMemo,
   handleNewMemo,
-  handleCancel}) => (
+  handleCancel
+}) => (
   <div className="edit-view-container">
     <Box>
       <TableContainer component={Paper}>
@@ -379,7 +380,7 @@ const MemoHome = ({ tabTitle }) => {
   // .........................................................................  
   
   const backend_getOpenMemos = async () => {
-    let open_url = approute.get_memos + "open/";
+    let open_url = approute.open_memos;
     try{
       setLoaderState(true);
       const response = await fetch(open_url);
@@ -391,7 +392,7 @@ const MemoHome = ({ tabTitle }) => {
       setLoaderState(false);
     }
     catch(error){
-      console.error("Error fetching open memos", error);
+      alert("Error fetching open memos", error);
     }
     finally{
       setLoaderState(false);
@@ -399,7 +400,7 @@ const MemoHome = ({ tabTitle }) => {
   }
 
   const backend_getCompletedMemos = async () => {
-    let completed_url = approute.get_memos + "completed/";
+    let completed_url = approute.completed_memos;
     try{
       setLoaderState(true);
       const response = await fetch(completed_url);

@@ -58,61 +58,18 @@ const MemoDashboard = ({
     );
 }
 
-const CodingDashboard = () => {
-    return(
-        <div className="dashboard">
-            <div className="dashboard-title">Coding</div>
-        </div>
-    )
-}
-const ElectronicsDashboard = () => {
-    return(
-        <div className="dashboard">
-            <div className="dashboard-title">Electronics</div>
-        </div>
-    )
-}
-const EntertainmentDashboard = () => {
-    return(
-        <div className="dashboard">
-            <div className="dashboard-title">Entertainment</div>
-        </div>
-    )
-}
-const HealthDashboard = () => {
-    return(
-        <div className="dashboard">
-            <div className="dashboard-title">Health</div>
-        </div>
-    )
-}
-const WealthDashboard = () => {
-    return(
-        <div className="dashboard">
-            <div className="dashboard-title">Wealth</div>
-        </div>
-    )
-}
-const DocsDashboard = () => {
-    return(
-        <div className="dashboard">
-            <div className="dashboard-title">Docs</div>
-        </div>
-    )
-}
-
 const DashBoards = ({
     memoData,
     memoLoadingState}) => {
     return(
         <div className="dashboard-container">
             <MemoDashboard inputData={memoData} memoLoadingState={memoLoadingState}/>
-            <ElectronicsDashboard/>
-            <CodingDashboard/>
+            {/* <ElectronicsDashboard/>
+             <CodingDashboard/>
             <EntertainmentDashboard/>
             <DocsDashboard/>
             <HealthDashboard/>
-            <WealthDashboard/>
+            <WealthDashboard/> */} 
         </div>
     )
 }

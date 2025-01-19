@@ -1,5 +1,8 @@
 from MemoPackage.memoRoutes import memos_blueprint
+from ElectronicsPackage.electronicsRoutes import electronics_blueprint
+
 from BasePackage import db,limiter
+
 from flask import Flask
 from flask_cors import CORS
 
@@ -16,6 +19,7 @@ db.init_app(app)
 limiter.init_app(app)
 
 app.register_blueprint(memos_blueprint, url_prefix='/memos')
+app.register_blueprint(electronics_blueprint, url_prefix='/electronics')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
