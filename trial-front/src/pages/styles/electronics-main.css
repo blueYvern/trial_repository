@@ -4,7 +4,6 @@
     justify-content: center;
     color: #000000;
     font-size: 30px;
-
     align-items: center;
 }
 
@@ -32,4 +31,51 @@
 .section-container{
     margin: 10px;
     border: 1px solid #8d6bdb;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.inv-header{
+    text-align: center;
+    margin: 10px;
+}
+
+.inv-header-button{
+    height:4vh;
+    align-content: center;
+}
+
+.inv-header-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+}
+
+.table-component-block{
+    margin: 1vh 10vw 1vh 10vw;
+}
+
+.table-header{
+    margin-bottom: 1vh;
+    display: flex;   
+}
+
+.right-btn{
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.btn{
+    margin-top:10px;
+    height: 4vh;
+}
+
+.comp-table th{
+    font-weight: bold;
+    background-color: #443469;
+    color: white;
+}
+
+.comp-table td {
+    text-align: center;
 }

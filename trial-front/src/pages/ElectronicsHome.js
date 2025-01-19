@@ -1,20 +1,11 @@
 import React,{useState, useEffect} from "react";
 import TabHeader from "../templates/TabHeader";
-import * as approute from "../routes/routes";
 import "./styles/electronics-main.css";
 
 import ElectronicsInventory from "./ElectronicsComponents";
 import ElectronicsProjects from "./ElectronicsProjects";
 
 // components and projects
-// add component
-// search for component
-// view inventory : component name,count (possibly image)
-// edit inventory/ delete inventory
-
-// add project : title, description, images?, start date, end date
-// list of projects by date,year
-// edit/delete project
 
 const ElectronicsHub = ({
     handleClick,

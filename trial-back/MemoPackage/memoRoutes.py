@@ -1,6 +1,5 @@
 from .memoService import MemoService,memo_limiter
 
-
 from flask import request, jsonify
 from flask import Blueprint
 
@@ -14,7 +13,7 @@ def create_new_memo():
         if MemoService.createMemo(memo=request.get_json()):
             return jsonify({'message': 'Memo created successfully'}), 201
 
-        return jsonify({'message': 'Memo creation failed'}), 201
+        return jsonify({'message': 'Memo creation failed'}), 304
 
     except Exception as e:
         return jsonify({'message': str(e)}), 500
@@ -64,7 +63,7 @@ def update_memo():
         if MemoService.updateMemo(request.get_json()):
             return jsonify({'message': 'Memo updated successfully'}), 200
 
-        return jsonify({'message': 'Memo update failed'}), 200
+        return jsonify({'message': 'Memo update failed'}), 304
 
     except Exception as e:
         return jsonify({'message': str(e)}), 500
@@ -75,7 +74,7 @@ def update_memo_action(action):
         if MemoService.updateMemoAction(request.get_json()):
             return jsonify({'message': 'Memo ' + action + ' successfully'}), 200
 
-        return jsonify({'message': 'Memo ' + action + ' failed'}), 200
+        return jsonify({'message': 'Memo ' + action + ' failed'}), 304
 
     except Exception as e:
         print(e)
@@ -88,7 +87,7 @@ def delete_memo(memo_id):
         if MemoService.deleteMemo(memo_id):
             return jsonify({'message': 'Memo deleted successfully'}), 200
 
-        return jsonify({'message': 'Memo deletion failed'}), 200
+        return jsonify({'message': 'Memo deletion failed'}), 304
 
     except Exception as e:
         return jsonify({'message': str(e)}), 500

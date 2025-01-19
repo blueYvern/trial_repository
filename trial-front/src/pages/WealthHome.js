@@ -10,4 +10,4 @@ function WealthHome({tabTitle}) {
     );
 }
 
-export default WealthHome;
+export default WealthHome; 

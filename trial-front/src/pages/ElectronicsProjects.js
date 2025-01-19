@@ -1,6 +1,9 @@
 import React,{useState, useEffect} from "react";
 import TabHeader from "../templates/TabHeader";
 
+// add project : title, description, images?, start date, end date
+// list of projects by date,year
+// edit/delete project
 
 const ElectronicsProjects = () => {
     return (
