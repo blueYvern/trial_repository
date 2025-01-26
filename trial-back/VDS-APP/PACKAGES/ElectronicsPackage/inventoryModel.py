@@ -1,4 +1,4 @@
-from BasePackage import db,limiter
+from APP.BasePackage import db,limiter
 
 inventory_limiter = limiter
 
