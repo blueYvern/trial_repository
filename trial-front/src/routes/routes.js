@@ -1,4 +1,4 @@
-const backend_url = "http://vesna.backend.com/";
+const backend_url = "http://krosmo-api.com/";
 
 
 
