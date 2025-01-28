@@ -1,4 +1,4 @@
-import React, {useState, useEffect, act} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import TabHeader from "../templates/TabHeader";
 import * as approute from "../routes/routes";
 import "./styles/memo-main.css";
@@ -109,7 +109,7 @@ const EditBlock = ({
 }) => {
   useEffect(() => {
     setEditableRow(row);
-  }, [row]);
+  }, [row,setEditableRow]);
   return (
     <Box className="edit-view-container">
       <TableContainer component={Paper}>
@@ -244,17 +244,17 @@ const MemoHome = ({ tabTitle }) => {
   const [loaderState, setLoaderState] = useState(false);
 
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async() => {
     if (state) {
       backend_getCompletedMemos();
     } else {
       backend_getOpenMemos();
     }
-  };
-
+  }, [state]);
+  
   useEffect(() => {
     fetchData();
-  }, [state]); // The data will be fetched when the 'state' changes
+  }, [fetchData]);
   
   const toggleState = (isCompleted) => {
     setState(isCompleted);
