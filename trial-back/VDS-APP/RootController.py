@@ -1,18 +1,12 @@
 from PACKAGES.MemoPackage.memoRoutes import memos_blueprint
 from PACKAGES.ElectronicsPackage.electronicsRoutes import electronics_blueprint
-from APP.BasePackage import db,limiter
-from configparser import RawConfigParser
+from APP.BasePackage import db,limiter,logger,db_path,dev_mode
 
-
-from flask import Flask
 from flask_cors import CORS
-import os
+from flask import Flask
 
-parser = RawConfigParser()
-parser.read("../resources/config.properties")
 
-db_path = parser.get('default', r'DATASOURCE')
-
+logger.info('Starting the application...')
 app = Flask(__name__)
 CORS(app) 
 
@@ -22,8 +16,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 limiter.init_app(app)
 
+logger.debug('Registering blueprints...')
 app.register_blueprint(memos_blueprint, url_prefix='/memos')
 app.register_blueprint(electronics_blueprint, url_prefix='/electronics')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=dev_mode)

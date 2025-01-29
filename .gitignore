@@ -1,4 +1,5 @@
 node_modules/
 __pycache__/
 venv/
-trial-back/resources/config.properties
+/trial-back/resources
+/trial-back/logs
