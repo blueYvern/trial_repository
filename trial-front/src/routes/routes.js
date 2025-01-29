@@ -1,7 +1,7 @@
-//const backend_url = "http://krosmo-api.com/";
+const backend_url = "http://krosmo-api.com/";
 
 //dev mode
-const backend_url = "http://localhost:5000/";
+//const backend_url = "http://localhost:5000/";
 
 // Memo routes
 const memo_url = backend_url + "memos/";
