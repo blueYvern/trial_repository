@@ -6,5 +6,5 @@ db = SQLAlchemy()
 
 limiter = Limiter(
     get_remote_address,
-    default_limits=["10 per minute"]
+    default_limits=["100 per minute"]
 )
