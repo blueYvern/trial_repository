@@ -1,17 +1,12 @@
-import React,{useState, useEffect} from "react";
+import React from "react";
 import TabHeader from "../templates/TabHeader";
+import "../App.css";
 
-// add project : title, description, images?, start date, end date
-// list of projects by date,year
-// edit/delete project
-
-const ElectronicsProjects = () => {
-    return (
-        <div>
-            <TabHeader tabTitle="Projects"/>
-            <h4 style={{textAlign:"center"}}>This page yet to be developed.</h4>
-        </div>
-    );
-}
+const ElectronicsProjects = () => (
+    <>
+        <TabHeader tabTitle="Projects" />
+        <h4 className="center-text">This page is yet to be developed.</h4>
+    </>
+);
 
 export default ElectronicsProjects;

@@ -43,7 +43,7 @@
 
 .memo-table th,
 .memo-table td {
-  text-align: center; 
+  text-align: left; 
   color: white;
 }
 
@@ -83,12 +83,13 @@
     color: white;
 }
 
-.inactive-button{
+.active-button{
     background-color: #0fa3adcb;
     color: white;
+    text-transform: capitalize;
 }
 
-.active-button{
+.inactive-button{
     background-color: #443469;
     color: white;
     cursor: pointer;
