@@ -1,13 +1,12 @@
 import React from "react";
 import TabHeader from "../templates/TabHeader";
+import "../App.css";
 
-function CodingHome({tabTitle}) {
-    return (
-        <div>
-            <TabHeader tabTitle={tabTitle}/>
-            <h4 style={{textAlign:"center"}}>This page yet to be developed.</h4>          
-        </div>
-    );
-}
+const CodingHome = ({tabTitle}) => (
+    <>
+        <TabHeader tabTitle={tabTitle} />
+        <h4 className="center-text">This page is yet to be developed.</h4>
+    </>
+);
 
 export default CodingHome;

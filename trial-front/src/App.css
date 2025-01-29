@@ -12,6 +12,11 @@
   margin: 0px;
 }
 
+.center-text{
+  text-align: center;
+  margin-top: 20vh;
+}
+
 .hero-header .home-icon{
   position: absolute;
   right: 10px;
@@ -31,6 +36,7 @@
   text-align: center;
   margin: 5px 40vw 5px 40vw;
 }
+
 .root-hub-container{
   display: flex;
   justify-content: center;

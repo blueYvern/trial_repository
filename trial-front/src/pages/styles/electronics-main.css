@@ -15,16 +15,14 @@
 }
 
 .active-button{
-    background-color: #443469;
+    background-color: #0fa3adcb;
     color: white;
-    cursor: pointer;
     text-transform: uppercase;
-    font-weight: 150;
 }
 
 .inactive-button{
-    background-color: #F6F6F6;
-    color: #000000;
+    background-color: #443469;
+    color: white;
     cursor: pointer;
 }
 
@@ -77,5 +75,9 @@
 }
 
 .comp-table td {
-    text-align: center;
+    text-align: left;
+}
+
+.comp-table {
+    background-color: #575353;
 }

@@ -1,13 +1,19 @@
 import React from 'react';
-import '../App.css';
 import { TiHome } from "react-icons/ti";
+import { useNavigate } from 'react-router-dom';
 
 function HeroHeader() {
+    const navigate = useNavigate();
+
+    const navigateHome = () => {
+        navigate("/");
+    };
+
     return (
-        <div class="hero-header">
-            <h1 class="title">SHUB</h1>
-            <TiHome class="home-icon" onClick={() => window.location.href = "/"} />
-        </div>
+        <header className="hero-header">
+            <h1 className="title">SHUB</h1>
+            <TiHome className="home-icon" onClick={navigateHome} />
+        </header>
     );
 }
 
