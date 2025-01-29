@@ -33,6 +33,7 @@ class MemoService:
         else:
             db.session.add(new_memo)
             db.session.commit()
+            return True
 
     @staticmethod
     def check_existing(title,persistence):
