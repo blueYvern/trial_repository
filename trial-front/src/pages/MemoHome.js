@@ -237,10 +237,10 @@ const MemoHome = ({ tabTitle }) => {
   const [actionText, setActionText] = useState("Complete");
   const [editableRow, setEditableRow] = useState({});
   const [showSave, setShowSave] = useState(false);
-  const [sortColumn, setSortColumn] = useState({ key: "", order: "" }); // Holds the sorting state
+  const [sortColumn, setSortColumn] = useState({ key: "", order: "" });
   const [displayCreate, setDisplayCreate] = useState(false);
   const [createdMemo, setCreatedMemo] = useState({});
-  const persistenceOptions = ["Daily", "Weekly", "Monthly", "Quarterly", "Yearly"];
+  const persistenceOptions = ["Daily", "Weekly", "Biweekly" ,"Monthly", "Quarterly"];
   const [loaderState, setLoaderState] = useState(false);
 
 

@@ -2,3 +2,7 @@ node_modules/
 __pycache__/
 venv/
 trial-back/resources/config.properties
+*.log
+*.db
+/trial-back/resources
+/trial-back/resources
