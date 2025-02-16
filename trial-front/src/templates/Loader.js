@@ -1,10 +1,10 @@
 import load from "../assets/load.gif"
-import "../App.css";
+import "./templates.css";
 
 const Loader = () => {
     return (
         <div className="loading-container">
-            <div className="loader">
+            <div>
                 <img src={load} alt="loading..." />
             </div>
         </div>

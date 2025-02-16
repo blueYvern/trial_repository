@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import RootHub from '../templates/RootHub';
-import * as approute from "../routes/routes";
 import Chart from 'react-apexcharts';
-import Loader from "../templates/Loader";
-import "../App.css";
+
+import { Loader, RootHub } from "../templates";
+import * as approute from "../routes/routes";
+
 
 const MemoChart = ({ open_count = 0, completed_count = 0 }) => {
     const series = [open_count, completed_count];
@@ -28,7 +28,7 @@ const MemoChart = ({ open_count = 0, completed_count = 0 }) => {
                             label: 'Total',
                             fontSize: '18px',
                             fontWeight: 600,
-                            color: '#ffffff',
+                            color: '#000000',
                             formatter: () => total,
                         }
                     }
@@ -42,7 +42,7 @@ const MemoChart = ({ open_count = 0, completed_count = 0 }) => {
 
 const MemoDashboard = ({ inputData, memoLoadingState }) => (
     <div className="dashboard">
-        <div className="dashboard-title">Memo</div>
+        <div className="dashboard-title black-box">Memo</div>
         {memoLoadingState ? <Loader /> : <MemoChart {...inputData} />}
     </div>
 );

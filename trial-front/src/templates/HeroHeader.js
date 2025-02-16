@@ -2,7 +2,9 @@ import React from 'react';
 import { TiHome } from "react-icons/ti";
 import { useNavigate } from 'react-router-dom';
 
-function HeroHeader() {
+import "./templates.css"
+
+function HeroHeader({modeToggle}) {
     const navigate = useNavigate();
 
     const navigateHome = () => {

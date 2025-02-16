@@ -1,0 +1,197 @@
+/*------------------------- Hero Header -------------------------*/
+.hero-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    background-color: #6ddab0;
+    color: #000000;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0px;
+}
+
+.hero-header .home-icon{
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+/*------------------------- Loader -------------------------*/
+.loading-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*------------------------- Root HUB -------------------------*/
+.root-navigator-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.root-navigator {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Hide scrollbar */
+    width: 100%;
+    justify-content: flex-start; /* Default behavior */
+}
+
+/* Center buttons when they fit within window width */
+.root-navigator.center-align {
+    justify-content: center;
+}
+
+/* Hide scrollbar for Webkit browsers */
+.root-navigator::-webkit-scrollbar {
+    display: none;
+}
+
+.item-button {
+    flex: 0 0 auto;
+    padding: 10px 15px;
+    margin: 5px;
+    background-color: #443469;
+    color: white;
+    transition: background 0.3s;
+    font-size: 16px;
+    width: 10vw;
+    height: 10vh;
+    min-width: fit-content;
+}
+
+.item-button:hover {
+    background-color: #0fa3adcb;
+    color: rgb(5, 5, 5);
+    text-transform: uppercase;
+}
+
+/*------------------------- Tab Header -------------------------*/
+.tab-header{
+    height: 6vh;
+    background-color: #6ddab0;
+    color: #000000;
+    font-size: 30px;
+    text-align: center;
+    margin: 5px 40vw 5px 40vw;
+    border-radius: 10vw;
+}
+
+
+/*------------------------- Tab Navigator -------------------------*/
+
+.tab-navigator-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* Hide scrollbar in Webkit browsers */
+.tab-navigator-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.scroll-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+}
+
+.scroll-button.left {
+    left: 0;
+}
+
+.scroll-button.right {
+    right: 0;
+}
+
+.scroll-button:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.tab-navigator {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    width: 100%;
+}
+
+.tab-navigator {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    scrollbar-width: none; 
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.tab-navigator.center-align {
+    justify-content: center;
+}
+
+.tab-navigator::-webkit-scrollbar {
+    display: none;
+}
+
+.components-button {
+    flex: 0 0 auto;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/*------------------------- Home Dashboards -------------------------*/
+.dashboard{
+    border: 2px solid black;
+    border-radius: 20px;
+    width: 20vw;
+    height: 30vh;
+    margin-top: 3vh;
+}
+
+.dashboard-title{
+    display: flex;
+    position: relative;
+    top: -5px;
+    left: 50%;
+    transform: translate(-50%);
+    color: white;
+    background-color: #443469;
+    height: 5vh;
+    font-size: larger;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.dashboard-container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7vh;
+    align-items: center;
+    justify-items: center;
+    margin: 10px 20px 10px 20px;
+}

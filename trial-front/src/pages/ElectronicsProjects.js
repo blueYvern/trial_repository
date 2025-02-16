@@ -1,5 +1,5 @@
 import React from "react";
-import TabHeader from "../templates/TabHeader";
+import { TabHeader } from "../templates";
 import "../App.css";
 
 const ElectronicsProjects = () => (

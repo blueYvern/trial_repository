@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
-import TabHeader from "../templates/TabHeader";
+import { Loader, TabHeader } from "../templates";
+
 import * as approute from "../routes/routes";
-import Loader from "../templates/Loader";
-import "./styles/electronics-main.css";
+import "./_styles/electronics-main.css";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
 
 const Button = ({ className, onClick, children }) => (
