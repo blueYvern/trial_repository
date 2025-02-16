@@ -145,6 +145,7 @@ const WealthHome = ({tabTitle}) => {
               <p className='expense-container-field black-box'>Total Expenses: ₹ <span className={totalExpenses.toFixed(2) < 7000.0 ? "go-value" : "no-go-value"}>{totalExpenses.toFixed(2)}</span></p>
             </div>
             <button className='budget-chart-selector black-box inactive-button' onClick={() => (setTypeDisplay(!typeDisplay))}> {typeDisplay ? "Show Category Spends" : "Show Type Spends"} </button>
+            <button onClick={() => setBarDisplay(!barDisplay)} hidden >View Monthly Spends</button>
             <div className='budget-chart-container'>
               {!barDisplay && 
                 !typeDisplay ?
