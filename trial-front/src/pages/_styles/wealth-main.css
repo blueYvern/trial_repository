@@ -1,0 +1,93 @@
+.date-container{
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    gap: 15px; 
+}
+
+.date-container-field{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    scroll-margin-bottom: inherit;
+}
+
+.no-result-message{
+    align-self: center;
+}
+
+.expense-container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.expense-container-field{
+    width:25vw;
+    justify-content: center;
+    display: flex;
+    
+}
+
+.go-value{
+    color:green
+}
+
+.no-go-value{
+    color:red
+}
+
+.budget-charts-section{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.budget-chart-selector{
+    display: block;
+    width: fit-content;
+    align-self: center;
+}
+
+.budget-chart-container{
+    display: contents;
+    justify-content: center;
+}
+
+.transactions-button{
+    height: 5vh ;
+    min-width: fit-content;
+    align-self: center;
+}
+
+.transaction-table-title{
+    display: flex;
+    justify-content: center;
+}
+
+.transaction-table-data{
+    display: flex;
+}
+
+.transactions-section{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2vh;
+}
+
+.transaction-table-container{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    align-self: center;
+}
+
+.transaction-table th{
+    text-transform: capitalize;
+    background-color: #8d6bdb;
+}
+
+.transaction-table{
+    border: 1px solid #8d6bdb;
+}

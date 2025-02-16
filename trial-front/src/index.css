@@ -4,10 +4,31 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale;  
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.active-button{
+  background-color: #0fa3adcb;
+  text-transform: uppercase;
+  color: black;
+  border-radius: 12vw;
+  border: 1px solid black;
+}
+
+.inactive-button{
+  background-color: #443469;
+  color: white;
+  cursor: pointer;
+  border-radius: 12vw;
+  border: 1px solid black;
+}
+
+.black-box{
+  border: 1px solid black;
+  border-radius: 10vw;
 }

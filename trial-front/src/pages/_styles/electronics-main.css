@@ -1,3 +1,4 @@
+/*------------------------- Electronics CSS -------------------------*/
 .electronics-home-hub{
     display: flex;
     flex-direction: row;
@@ -8,22 +9,9 @@
 }
 
 .components-button{
-    text-transform: capitalize;
     width: 25vw;
     height: 10vh;
     font-size: larger;
-}
-
-.active-button{
-    background-color: #0fa3adcb;
-    color: white;
-    text-transform: uppercase;
-}
-
-.inactive-button{
-    background-color: #443469;
-    color: white;
-    cursor: pointer;
 }
 
 .section-container{
