@@ -1,3 +1,5 @@
+/* ------------------------- Memo CSS ------------------------- */
+
 .memo-header{
     display: flex;
     flex-direction: row;
@@ -38,13 +40,11 @@
 .memo-table{
     table-layout: fixed;
     text-transform: capitalize;
-    background-color: #575353;
 }
 
 .memo-table th,
 .memo-table td {
   text-align: left; 
-  color: white;
 }
 
 .memo-table th {
@@ -83,18 +83,11 @@
     color: white;
 }
 
-.active-button{
-    background-color: #0fa3adcb;
-    color: white;
-    text-transform: capitalize;
+.edit-button-container{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
-
-.inactive-button{
-    background-color: #443469;
-    color: white;
-    cursor: pointer;
-}
-
 
 .create-table th {
     font-weight: bold;
