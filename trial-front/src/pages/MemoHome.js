@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box } from "@mui/material";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
-import Loader from "../templates/Loader";
-import TabHeader from "../templates/TabHeader";
+
+import { MemoEditBlock, MemoCreateBlock, MemoDataTable } from "./MemoComponents";
+import { Loader, TabHeader } from "../templates";
 import * as approute from "../routes/routes";
-import "./styles/memo-main.css";
+import "./_styles/memo-main.css";
 
 const StatusButtons = ({ state, toggleState, search, setSearch, handleNewAction }) => (
   <div className="memo-header">
-    {/* Search Input */}
     <input
       className="memo-search"
       type="text"
@@ -17,7 +15,6 @@ const StatusButtons = ({ state, toggleState, search, setSearch, handleNewAction 
       onChange={(e) => setSearch(e.target.value)}
     />
 
-    {/* Add Button - Only visible when state is false */}
     {!state && (
       <div className="memo-create-button">
         <button className="status-button inactive-button" onClick={handleNewAction}>
@@ -26,7 +23,6 @@ const StatusButtons = ({ state, toggleState, search, setSearch, handleNewAction 
       </div>
     )}
 
-    {/* Status Buttons - Open / Completed */}
     <div className="memo-status-buttons">
       <button
         onClick={() => toggleState(false)}
@@ -45,203 +41,6 @@ const StatusButtons = ({ state, toggleState, search, setSearch, handleNewAction 
     </div>
   </div>
 );
-
-const DataTable = ({ data, search, hiddenColumns, selectedRows, onRowClick, sortColumn, onSortColumn }) => {
-  const renderSortIndicator = (columnKey) => {
-    if (sortColumn.key === columnKey) {
-      return sortColumn.order === "asc" ? "↑" : sortColumn.order === "desc" ? "↓" : "";
-    }
-    return "";
-  };
-
-  const filterData = data.filter((row) => row.title.toLowerCase().includes(search.toLowerCase()));
-
-  return (
-    <TableContainer component={Paper}>
-      <Table className="memo-table">
-        <TableHead className="memo-table-header">
-          <TableRow>
-            {["title", "target_date", "created_date", "persistence"].map((column) => (
-              <TableCell key={column} onClick={() => onSortColumn(column)}>
-                {capitalizeFirstLetter(column)} {renderSortIndicator(column)}
-              </TableCell>
-            ))}
-            {!hiddenColumns.includes("completed") && (
-              <TableCell onClick={() => onSortColumn("completed_date")}>
-                Completed Date {renderSortIndicator("completed_date")}
-              </TableCell>
-            )}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filterData.map((row) => (
-            <TableRow
-              key={row.id}
-              hover
-              onClick={() => onRowClick(row)}
-              className={selectedRows.some((selected) => selected.id === row.id) ? "memo-table-row-selected" : ""}
-            >
-              <TableCell>{row.title}</TableCell>
-              <TableCell>{row.target_date}</TableCell>
-              <TableCell>{row.created_date}</TableCell>
-              <TableCell>{row.persistence}</TableCell>
-              {!hiddenColumns.includes("completed") && <TableCell>{row.completed_date}</TableCell>}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-};
-
-const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
-
-const EditBlock = ({
-  row,
-  onAction,
-  actionText,
-  editableRow,
-  setEditableRow,
-  showSave,
-  updateAction,
-  handleInputChange,
-  handleDateChange,
-  persistenceOptions,
-  deleteAction
-}) => {
-  useEffect(() => {
-    setEditableRow(row);
-  }, [row, setEditableRow]);
-
-  const renderPersistenceOptions = () => (
-    persistenceOptions.map((option) => (
-      <option key={option} value={option}>
-        {option}
-      </option>
-    ))
-  );
-
-  const renderEditableRow = () => (
-    <>
-      <TableRow>
-        <TableCell>
-          <input
-            type="text"
-            value={editableRow.title}
-            onChange={(e) => handleInputChange(e, "title")}
-          />
-        </TableCell>
-        <TableCell>
-          <input
-            type="date"
-            value={editableRow.target_date}
-            onChange={handleDateChange}
-            min={new Date().toISOString().split("T")[0]}
-          />
-        </TableCell>
-        <TableCell>{editableRow.created_date}</TableCell>
-        <TableCell>
-          <select
-            value={editableRow.persistence}
-            onChange={(e) => handleInputChange(e, "persistence")}
-          >
-            {renderPersistenceOptions()}
-          </select>
-        </TableCell>
-        <TableCell>
-          <button className="status-button active-button" onClick={onAction}>
-            {actionText}
-          </button>
-        </TableCell>
-      </TableRow>
-    </>
-  );
-
-  return (
-    <Box className="edit-view-container">
-      <TableContainer component={Paper}>
-        <Table className="edit-table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Target Date</TableCell>
-              <TableCell>Created Date</TableCell>
-              <TableCell>Persistence</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{renderEditableRow()}</TableBody>
-        </Table>
-      </TableContainer>
-      {showSave && (
-        <button className="save-button" onClick={updateAction}>
-          Save
-        </button>
-      )}
-      <button className="delete-button" onClick={deleteAction}>
-        Delete
-      </button>
-    </Box>
-  );
-};
-
-const CreateBlock = ({ persistenceOptions, handleCreateMemo, handleNewMemo, handleCancel }) => {
-  
-  const renderPersistenceOptions = () => (
-    persistenceOptions.map((option) => (
-      <option key={option} value={option}>
-        {option}
-      </option>
-    ))
-  );
-
-  const handleInputChange = (field) => (e) => handleCreateMemo(e, field);
-
-  return (
-    <div className="edit-view-container">
-      <Box>
-        <TableContainer component={Paper}>
-          <Table className="create-table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Title</TableCell>
-                <TableCell>Target Date</TableCell>
-                <TableCell>Persistence</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    onChange={handleInputChange("title")}
-                    required
-                  />
-                </TableCell>
-                <TableCell>
-                  <input
-                    type="date"
-                    placeholder={new Date().toISOString().split("T")[0]}
-                    min={new Date().toISOString().split("T")[0]}
-                    onChange={handleInputChange("target_date")}
-                  />
-                </TableCell>
-                <TableCell>
-                  <select onChange={handleInputChange("persistence")}>
-                    {renderPersistenceOptions()}
-                  </select>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-      <button onClick={handleNewMemo}>Create</button>
-      <button onClick={handleCancel}>Cancel</button>
-    </div>
-  );
-};
 
 const MemoHome = ({ tabTitle }) => {
   const [state, setState] = useState(false);
@@ -265,12 +64,17 @@ const MemoHome = ({ tabTitle }) => {
     setDisplayCreate(false);
   };
 
+  const afterMethods = () => {
+    setSelectedRows([]);
+    fetchData();
+  }
+
   const handleRowClick = (row) => {
     const currentSelected = selectedRows.some((selected) => selected.id === row.id);
     if (currentSelected) {
-      setSelectedRows([]);
-      setEditableRow({});
+      resetSelection();
     } else {
+      setShowSave(false);
       setSelectedRows([row]);
       setEditableRow(row);
     }
@@ -294,6 +98,10 @@ const MemoHome = ({ tabTitle }) => {
     const updatedRow = { ...editableRow, [field]: e.target.value };
     setEditableRow(updatedRow);
     setShowSave(JSON.stringify(updatedRow) !== JSON.stringify(selectedRows[0]));
+  };
+
+  const handleDateChange = (e) => {
+    handleInputChange(e, "target_date");
   };
 
   const updateAction = async () => {
@@ -346,6 +154,7 @@ const MemoHome = ({ tabTitle }) => {
       alert(`Error with operation: ${error}`);
       return false;
     } finally {
+      afterMethods();
       setLoaderState(false);
     }
   };
@@ -383,7 +192,7 @@ const MemoHome = ({ tabTitle }) => {
                 setSearch={setSearch}
                 handleNewAction={() => setDisplayCreate(true)}
               />
-              <DataTable
+              <MemoDataTable
                 data={data}
                 search={search}
                 hiddenColumns={state ? [] : ["completed"]}
@@ -394,7 +203,7 @@ const MemoHome = ({ tabTitle }) => {
               />
             </div>
           ) : (
-            <CreateBlock 
+            <MemoCreateBlock 
               persistenceOptions={persistenceOptions}
               createdMemo={createdMemo}
               setCreatedMemo={setCreatedMemo}
@@ -404,7 +213,7 @@ const MemoHome = ({ tabTitle }) => {
             />
           )}
           {selectedRows.length > 0 && !displayCreate && (
-            <EditBlock
+            <MemoEditBlock
               row={selectedRows[0]}
               onAction={handleAction}
               actionText={actionText}
@@ -413,6 +222,7 @@ const MemoHome = ({ tabTitle }) => {
               showSave={showSave}
               updateAction={updateAction}
               handleInputChange={handleInputChange}
+              handleDateChange={handleDateChange}
               persistenceOptions={persistenceOptions}
               deleteAction={() => deleteMemo(editableRow.id)}
             />

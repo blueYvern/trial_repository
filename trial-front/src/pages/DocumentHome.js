@@ -1,5 +1,5 @@
 import React from "react";
-import TabHeader from "../templates/TabHeader";
+import { Loader, TabHeader } from "../templates";
 import "../App.css";
 
 const DocumentHome = ({tabTitle}) => (
