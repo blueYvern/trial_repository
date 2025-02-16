@@ -7,7 +7,6 @@ import "./_styles/memo-main.css";
 
 const StatusButtons = ({ state, toggleState, search, setSearch, handleNewAction }) => (
   <div className="memo-header">
-    {/* Search Input */}
     <input
       className="memo-search"
       type="text"
@@ -99,6 +98,10 @@ const MemoHome = ({ tabTitle }) => {
     const updatedRow = { ...editableRow, [field]: e.target.value };
     setEditableRow(updatedRow);
     setShowSave(JSON.stringify(updatedRow) !== JSON.stringify(selectedRows[0]));
+  };
+
+  const handleDateChange = (e) => {
+    handleInputChange(e, "target_date");
   };
 
   const updateAction = async () => {
